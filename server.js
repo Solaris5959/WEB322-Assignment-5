@@ -1,12 +1,19 @@
 const legoData = require("./modules/legoSets");
+var path = require('path');
 
 const express = require('express');
 const app = express();
 
 const HTTP_PORT = process.env.PORT || 8080;
 
+app.use(express.static('public'));
+
 app.get('/', (req, res) => {
-    res.send('Assignment 2:  Student Name - Student Id');
+  res.sendFile(path.join(__dirname, '/views/home.html'));
+});
+
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, '/views/about.html'))
 });
 
 app.get("/lego/sets", async (req,res)=>{
@@ -30,6 +37,10 @@ app.get("/lego/sets/theme-demo", async (req,res)=>{
   }catch(err){
     res.send(err);
   }
+});
+
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, '/views/404.html'))
 });
 
 legoData.initialize().then(()=>{

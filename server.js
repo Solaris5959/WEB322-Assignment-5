@@ -16,23 +16,25 @@ app.get('/about', (req, res) => {
 });
 
 app.get("/lego/sets", async (req,res)=>{  
-  let sets = await legoData.getAllSets();
-  res.send(sets);
+  try {
+    if (req.query.theme) {
+      let sets = await legoData.getSetsByTheme(req.query.theme);
+      res.send(sets);
+    }
+    else {
+      let sets = await legoData.getAllSets();
+      res.send(sets);
+    }
+  } catch(err) {
+    res.send(err);
+  }
+  
 });
 
 app.get("/lego/sets/:id", async (req,res)=>{
   try{
-    let set = await legoData.getSetByNum(id);
+    let set = await legoData.getSetByNum(req.params.id);
     res.send(set);
-  }catch(err){
-    res.send(err);
-  }
-});
-
-app.get("/lego/sets/theme-demo", async (req,res)=>{
-  try{
-    let sets = await legoData.getSetsByTheme("tech");
-    res.send(sets);
   }catch(err){
     res.send(err);
   }

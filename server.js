@@ -1,7 +1,6 @@
 const legoData = require("./modules/legoSets");
-var path = require('path');
-
 const express = require('express');
+var path = require('path');
 const app = express();
 
 const HTTP_PORT = process.env.PORT || 8080;
@@ -16,14 +15,14 @@ app.get('/about', (req, res) => {
   res.sendFile(path.join(__dirname, '/views/about.html'))
 });
 
-app.get("/lego/sets", async (req,res)=>{
+app.get("/lego/sets", async (req,res)=>{  
   let sets = await legoData.getAllSets();
   res.send(sets);
 });
 
-app.get("/lego/sets/id-demo", async (req,res)=>{
+app.get("/lego/sets/:id", async (req,res)=>{
   try{
-    let set = await legoData.getSetByNum("001-1");
+    let set = await legoData.getSetByNum(id);
     res.send(set);
   }catch(err){
     res.send(err);

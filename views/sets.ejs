@@ -29,19 +29,20 @@
         </div>
       </div>
 
-      <table class="table">
+      <table class="table table-striped">
         <tbody>
             <% sets.forEach(set=>{ %>
-              <tr class="hover">
+              <tr>
                 <td>
                   <div class="avatar">
-                    <div class="rounded">
+                    <div class="rounded h-16 w-16">
                       <img src="<%= set.img_url %>" />
                     </div>
                   </div>
                 </td>
                 <td><%= set.name %> | <a href=/lego/sets?theme=<%= set.theme %>" class="btn  mt-2 btn-xs"><%= set.theme %></a></td>
-                <td><span class="font-bold">Year: </span><%= set.year %> - <span class="font-bold">Parts: </span><%= set.num_parts %></td>
+                <td><span class="font-bold">Year: </span><%= set.year %></td>
+                <td><span class="font-bold">Parts: </span><%= set.num_parts %></td>
                 <th>
                   <a href="/lego/sets/<%= set.set_num %>" class="btn btn-xs">details</a>
                 </th>

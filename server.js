@@ -49,8 +49,8 @@ app.get("/lego/sets", async (req,res)=>{
 
 app.get("/lego/sets/:id", async (req,res)=>{
   try{
-    let set = await legoData.getSetByNum(req.params.id);
-    res.send(set);
+    let legoSet = await legoData.getSetByNum(req.params.id);
+    res.render("set", {set: legoSet});
   }catch(err){
     res.send(err);
   }

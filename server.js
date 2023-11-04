@@ -1,12 +1,12 @@
 /********************************************************************************
-*  WEB322 – Assignment 03
+*  WEB322 – Assignment 04
 * 
 *  I declare that this assignment is my own work in accordance with Seneca's
 *  Academic Integrity Policy:
 * 
 *  https://www.senecacollege.ca/about/policies/academic-integrity-policy.html
 * 
-*  Name: Connor McDonald_______ Student ID: 136123221_____ Date: 10/13/2023____
+*  Name: Connor McDonald        Student ID: 136123221      Date: 11/04/2023
 *
 *  Published URL: https://agreeable-ox-sandals.cyclic.cloud
 *
@@ -21,16 +21,17 @@ const app = express();
 const HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.static('public'));
+app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/views/home.html'));
+  res.render('home');
 });
 
 app.get('/about', (req, res) => {
-  res.sendFile(path.join(__dirname, '/views/about.html'))
+  res.render('about');
 });
 
-app.get("/lego/sets", async (req,res)=>{  
+app.get("/lego/sets", async (req,res)=>{    
   try {
     if (req.query.theme) {
       let sets = await legoData.getSetsByTheme(req.query.theme);
@@ -56,7 +57,7 @@ app.get("/lego/sets/:id", async (req,res)=>{
 });
 
 app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, '/views/404.html'))
+  res.status(404).render('404')
 });
 
 legoData.initialize().then(()=>{

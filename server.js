@@ -8,7 +8,7 @@
 * 
 *  Name: Connor McDonald        Student ID: 136123221      Date: 11/04/2023
 *
-*  Published URL: 
+*  Published URL: https://fair-teal-bee-tie.cyclic.app/
 *
 ********************************************************************************/
 

@@ -45,7 +45,7 @@
           <span class="font-bold">Set Name: </span> <%= set.name %> <br />
           <span class="font-bold">Year Released: </span> <%= set.year %> <br />
           <span class="font-bold">Theme: </span> <%= set.theme %> <br />
-          <span class="font-bold">Number of Parts: </span> <%= set.num_parts %> <br /><br />
+          <span class="font-bold">Number of Parts: </span> <%= set.num_parts == 0 ? 'Unknown' : set.num_parts %> <br /><br />
   
           <span id="quote"></span>
           <br /><br />

@@ -35,9 +35,12 @@
               <tr>
                 <td>
                   <div class="avatar">
-                    <div class="rounded h-16 w-16">
-                      <img src="<%= set.img_url %>" />
-                    </div>
+                    <!-- <div>
+                      <img class="w-1/5 rounded-lg bg-transparent bg-no-repeat bg-cover"
+                        src="<%= set.img_url %>" />
+                    </div> -->
+
+                    <div class="w-32 h-32 rounded-lg bg-transparent bg-no-repeat bg-cover" style="background-image: url('<%= set.img_url %>');"></div>
                   </div>
                 </td>
                 <td><%= set.name %> | <a href=/lego/sets?theme=<%= set.theme %>" class="btn  mt-2 btn-xs"><%= set.theme %></a></td>

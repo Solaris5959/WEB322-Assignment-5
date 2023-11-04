@@ -7,11 +7,10 @@
   <title>About</title>
   <link rel="stylesheet" href="/css/main.css" />
   <script>
-    document.addEventListener("DOMContentLoaded", async ()=>{
+    document.addEventListener("DOMContentLoaded", async () => {
         let res = await fetch("https://quotable.io/random");
         let data = await res.json();
-
-        document.getElementById("quote").innerHTML = `"${data.content}"<br />- <em>${data.author}</em>`;
+        document.getElementById("quote").innerHTML=`"${data.content}"<br />- <em>${data.author}</em>`;
     });
   </script>
 </head>

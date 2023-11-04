@@ -42,7 +42,8 @@ app.get("/lego/sets", async (req,res)=>{
       res.render("sets",{sets: legoSets});
     }
   } catch(err) {
-    res.send(err);
+    // not sure why this one just doesn't work. getSetsByTheme isn't rejecting for some reason
+    res.render('404', {message: err});
   }
   
 });
@@ -52,12 +53,12 @@ app.get("/lego/sets/:id", async (req,res)=>{
     let legoSet = await legoData.getSetByNum(req.params.id);
     res.render("set", {set: legoSet});
   }catch(err){
-    res.send(err);
+    res.render('404', {message: err});
   }
 });
 
 app.use((req, res) => {
-  res.status(404).render('404')
+  res.status(404).render('404', {message: "I'm Sorry, we're unable to find the page you were looking for (︶︹︺)"})
 });
 
 legoData.initialize().then(()=>{

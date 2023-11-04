@@ -34,12 +34,12 @@ app.get('/about', (req, res) => {
 app.get("/lego/sets", async (req,res)=>{    
   try {
     if (req.query.theme) {
-      let sets = await legoData.getSetsByTheme(req.query.theme);
-      res.send(sets);
+      let legoSets = await legoData.getSetsByTheme(req.query.theme);
+      res.render("sets",{sets: legoSets});
     }
     else {
-      let sets = await legoData.getAllSets();
-      res.send(sets);
+      let legoSets = await legoData.getAllSets();
+      res.render("sets",{sets: legoSets});
     }
   } catch(err) {
     res.send(err);

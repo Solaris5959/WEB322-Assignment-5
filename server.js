@@ -1,14 +1,14 @@
 /********************************************************************************
-*  WEB322 – Assignment 04
+*  WEB322 – Assignment 05
 * 
 *  I declare that this assignment is my own work in accordance with Seneca's
 *  Academic Integrity Policy:
 * 
 *  https://www.senecacollege.ca/about/policies/academic-integrity-policy.html
 * 
-*  Name: Connor McDonald        Student ID: 136123221      Date: 11/04/2023
+*  Name: Connor McDonald        Student ID: 136123221      Date: 11/15/2023
 *
-*  Published URL: https://fair-teal-bee-tie.cyclic.app/
+*  Published URL: 
 *
 ********************************************************************************/
 
@@ -22,6 +22,33 @@ const HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
+
+// Postgres Database
+const postgres = require('postgres');
+require('dotenv').config();
+
+let { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
+
+const sql = postgres({
+  host: PGHOST,
+  database: PGDATABASE,
+  username: PGUSER,
+  password: PGPASSWORD,
+  port: 5432,
+  ssl: 'require',
+  connection: {
+    options: `project=${ENDPOINT_ID}`,
+  },
+});
+
+async function getPgVersion() {
+  const result = await sql`select version()`;
+  console.log(result);
+}
+
+getPgVersion();
+
+// Middleware
 
 app.get('/', (req, res) => {
   res.render('home');

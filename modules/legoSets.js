@@ -3,6 +3,57 @@ const themeData = require("../data/themeData");
 require('dotenv').config();
 const Sequelize = require('sequelize');
 
+let sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, process.env.DB_PASSWORD, {
+  host: process.env.DB_HOST,
+  dialect: 'postgres',
+  port: 5432,
+  dialectOptions: {
+    ssl: { rejectUnauthorized: false },
+  },
+});
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully');
+  })
+  .catch((err) => {
+    console.log('Unable to connect to the database:', err);
+  });
+
+const Theme = sequelize.define('Theme', {
+    id: { 
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    name: Sequelize.STRING,
+  },
+  {
+    createdAt: false, // disable createdAt
+    updatedAt: false, // disable updatedAt
+  },
+);
+
+const Set = sequelize.define('Set', {
+    set_num: {
+      type: Sequelize.STRING,
+      primaryKey: true,
+    },
+    name: Sequelize.STRING,
+    year: Sequelize.INTEGER,
+    num_parts: Sequelize.INTEGER,
+    theme_id: Sequelize.INTEGER,
+    img_url: Sequelize.STRING,
+  },
+  {
+    createdAt: false, // disable createdAt
+    updatedAt: false, // disable updatedAt
+  },
+);
+
+Set.belongsTo(Theme, {foreignKey: 'theme_id'})
+
 let sets = [];
 
 function initialize() {

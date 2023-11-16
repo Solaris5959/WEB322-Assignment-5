@@ -17,36 +17,17 @@ const legoData = require("./modules/legoSets");
 const express = require('express');
 var path = require('path');
 const app = express();
+const Sequelize = require('sequelize');
+const legoSets = require("./modules/legoSets");
+
 
 const HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
-// Postgres Database
-const postgres = require('postgres');
-require('dotenv').config();
 
-let { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
 
-const sql = postgres({
-  host: PGHOST,
-  database: PGDATABASE,
-  username: PGUSER,
-  password: PGPASSWORD,
-  port: 5432,
-  ssl: 'require',
-  connection: {
-    options: `project=${ENDPOINT_ID}`,
-  },
-});
-
-async function getPgVersion() {
-  const result = await sql`select version()`;
-  console.log(result);
-}
-
-getPgVersion();
 
 // Middleware
 

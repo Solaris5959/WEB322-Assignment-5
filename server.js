@@ -27,8 +27,6 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 
-
-
 // Middleware
 
 app.get('/', (req, res) => {
@@ -42,15 +40,15 @@ app.get('/about', (req, res) => {
 app.get("/lego/sets", async (req,res)=>{    
   try {
     if (req.query.theme) {
-      let legoSets = await legoData.getSetsByTheme(req.query.theme);
-      res.render("sets",{sets: legoSets});
+      let sets = await legoSets.getSetsByTheme(req.query.theme);
+      console.log(sets);
+      res.render("sets",{sets: sets});
     }
     else {
-      let legoSets = await legoData.getAllSets();
-      res.render("sets",{sets: legoSets});
+      let sets = await legoData.  getAllSets();
+      res.render("sets",{sets: sets});
     }
   } catch(err) {
-    // not sure why this one just doesn't work. getSetsByTheme isn't rejecting for some reason
     res.render('404', {message: err});
   }
   
@@ -58,8 +56,8 @@ app.get("/lego/sets", async (req,res)=>{
 
 app.get("/lego/sets/:id", async (req,res)=>{
   try{
-    let legoSet = await legoData.getSetByNum(req.params.id);
-    res.render("set", {set: legoSet});
+    let set = await legoData.getSetByNum(req.params.id);
+    res.render("set", {set: set});
   }catch(err){
     res.render('404', {message: err});
   }

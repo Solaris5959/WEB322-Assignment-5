@@ -1,5 +1,3 @@
-const setData = require("../data/setData");
-const themeData = require("../data/themeData");
 require('dotenv').config();
 const Sequelize = require('sequelize');
 
@@ -54,53 +52,60 @@ const Set = sequelize.define('Set', {
 
 Set.belongsTo(Theme, {foreignKey: 'theme_id'})
 
-let sets = [];
-
 function initialize() {
-  return new Promise((resolve, reject) => {
-    setData.forEach(setElement => {
-      let setWithTheme = { ...setElement, theme: themeData.find(themeElement => themeElement.id == setElement.theme_id).name }
-      sets.push(setWithTheme);
+  return new Promise(async (resolve, reject) => {
+    try {
+      await sequelize.sync();
       resolve();
-    });
+    }catch(err){
+      reject(err.message);
+    }
   });
-
 }
 
+// get all sets in DB
 function getAllSets() {
   return new Promise((resolve, reject) => {
-    resolve(sets);
+    Set.findAll({
+      include: [Theme],
+    }).then((sets) => {
+      resolve(sets);
+    }).catch((err) => {
+      reject(err.message);
+    });
   });
 }
 
+// get single set with set_num matching param
 function getSetByNum(setNum) {
-
   return new Promise((resolve, reject) => {
-    let foundSet = sets.find(s => s.set_num == setNum);
-
-    if (foundSet) {
-      resolve(foundSet)
-    } else {
-      reject("Unable to find requested set");
-    }
-
+    Set.findAll({
+      where: {set_num: setNum},
+      include: [Theme]
+    }).then((set) => {
+      resolve(set[0]); // returns just the set found
+    }).catch((err) => {
+      reject("unable to find requested set");
+    });
   });
-
 }
 
+// get all sets with theme matching param
 function getSetsByTheme(theme) {
-
   return new Promise((resolve, reject) => {
-    let foundSets = sets.filter(s => s.theme.toUpperCase().includes(theme.toUpperCase()));
-
-    if (foundSets) {
-      resolve(foundSets)
-    } else {
-      reject("Unable to find requested sets");
-    }
-
+    Set.findAll({
+      include: [Theme],
+      where: {
+        '$Theme.name$': { [Sequelize.Op.iLike]: `%${theme}%` }
+      }
+    })
+      .then((sets) => {
+        resolve(sets); // Return an array of sets matching the theme
+      })
+      .catch((err) => {
+        reject("Unable to find requested sets");
+      });
   });
-
 }
 
 module.exports = { initialize, getAllSets, getSetByNum, getSetsByTheme }

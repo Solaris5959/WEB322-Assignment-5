@@ -39,7 +39,12 @@ app.get("/lego/sets", async (req,res)=>{
   try {
     if (req.query.theme) {
       let sets = await legoData.getSetsByTheme(req.query.theme);
-      res.render("sets",{sets: sets});
+      if (sets.length > 0) {
+        res.render("sets",{sets: sets});
+      }
+      else {
+        res.render('404', {message: "I'm Sorry, there are no sets with that theme (︶︹︺)"})
+      }
     }
     else {
       let sets = await legoData.  getAllSets();

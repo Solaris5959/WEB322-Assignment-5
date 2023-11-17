@@ -130,7 +130,7 @@ function addSet(setData) {
 // return list of all themes
 function getAllThemes() {
   return new Promise((resolve, reject) => {
-    Theme.findAll()
+    Theme.findAll({})
       .then((themes) => {
         resolve(themes);
       })

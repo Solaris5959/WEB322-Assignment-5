@@ -12,23 +12,21 @@
 *
 ********************************************************************************/
 
-
 const legoData = require("./modules/legoSets");
 const express = require('express');
 var path = require('path');
 const app = express();
 const Sequelize = require('sequelize');
-const legoSets = require("./modules/legoSets");
 
 
 const HTTP_PORT = process.env.PORT || 8080;
 
 app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 
 // Middleware
-
 app.get('/', (req, res) => {
   res.render('home');
 });
@@ -40,8 +38,7 @@ app.get('/about', (req, res) => {
 app.get("/lego/sets", async (req,res)=>{    
   try {
     if (req.query.theme) {
-      let sets = await legoSets.getSetsByTheme(req.query.theme);
-      console.log(sets);
+      let sets = await legoData.getSetsByTheme(req.query.theme);
       res.render("sets",{sets: sets});
     }
     else {
@@ -51,7 +48,6 @@ app.get("/lego/sets", async (req,res)=>{
   } catch(err) {
     res.render('404', {message: err});
   }
-  
 });
 
 app.get("/lego/sets/:id", async (req,res)=>{
@@ -62,6 +58,27 @@ app.get("/lego/sets/:id", async (req,res)=>{
     res.render('404', {message: err});
   }
 });
+
+app.get("/lego/addSet", async (req,res)=>{
+  try{
+    let themeData = await legoData.getAllThemes();
+    res.render("addSet", {theme: themeData});
+  }catch(err){
+    res.render('404', {message: err});
+  }
+});
+
+app.post("/lego/addSet", async (req,res)=>{
+  try{
+    await legoData.addSet(req.body);
+    res.redirect("/lego/sets");
+  }catch(err){
+    res.render('500', { message: `I'm sorry, but we have encountered the following error: ${err}` });
+  }
+});
+
+
+
 
 app.use((req, res) => {
   res.status(404).render('404', {message: "I'm Sorry, we're unable to find the page you were looking for (︶︹︺)"})

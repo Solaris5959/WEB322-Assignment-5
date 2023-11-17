@@ -108,4 +108,36 @@ function getSetsByTheme(theme) {
   });
 }
 
-module.exports = { initialize, getAllSets, getSetByNum, getSetsByTheme }
+// add a new set with data = setData
+function addSet(setData) {
+  return new Promise((resolve, reject) => {
+    Set.create({
+      set_num: setData.set_num,
+      name: setData.name,
+      year: setData.year,
+      num_parts: setData.num_parts,
+      theme_id: setData.theme_id,
+      img_url: setData.img_url,
+    }).then(() => {
+        resolve();
+      })
+      .catch((err) => {
+        reject(err.errors[0].message);
+      });
+  });
+}
+
+// return list of all themes
+function getAllThemes() {
+  return new Promise((resolve, reject) => {
+    Theme.findAll()
+      .then((themes) => {
+        resolve(themes);
+      })
+      .catch((err) => {
+        reject(err.message);
+      })
+  })
+}
+
+module.exports = { initialize, getAllSets, getSetByNum, getSetsByTheme, addSet, getAllThemes }

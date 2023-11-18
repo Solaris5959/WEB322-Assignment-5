@@ -58,12 +58,12 @@
               <select id="theme_id" name="theme_id" required
                 class="w-full border border-gray-300 rounded-md px-3 py-2 focus:border-blue-300">
                 
-                <option value="-1">Test</option>
-                theme.forEach({
-                    <option value="<%= theme.id %>">
-                        <%= theme.name %>
-                    </option>
-                })               
+                <% theme.forEach(theme=>{ %>
+                  <option value="<%= theme.id %>">
+                    <%= theme.name %>
+                  </option>
+                <% }) %>
+                            
                 
               </select>
             </div>

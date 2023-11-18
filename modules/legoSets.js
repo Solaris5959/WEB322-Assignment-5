@@ -140,4 +140,37 @@ function getAllThemes() {
   })
 }
 
-module.exports = { initialize, getAllSets, getSetByNum, getSetsByTheme, addSet, getAllThemes }
+// update set with set_num matching setNum with data = setData
+function editSet(setNum, setData) {
+  return new Promise((resolve, reject) => {
+    Set.update({
+      set_num: setData.set_num,
+      name: setData.name,
+      year: setData.year,
+      num_parts: setData.num_parts,
+      theme_id: setData.theme_id,
+      img_url: setData.img_url,
+    }, {
+      where: {set_num: setNum}
+    }).then(() => {
+      resolve();
+    }).catch((err) => {
+      reject(err.errors[0].message);
+    });
+  });
+}
+
+// delete set with set_num matching setNum
+function deleteSet(setNum) {
+  return new Promise((resolve, reject) => {
+    Set.destroy({
+      where: {set_num: setNum}
+    }).then(() => {
+      resolve();
+    }).catch((err) => {
+      reject(err.errors[0].message);
+    });
+  });
+} 
+
+module.exports = { initialize, getAllSets, getSetByNum, getSetsByTheme, addSet, getAllThemes, editSet, deleteSet }
